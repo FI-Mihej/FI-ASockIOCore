@@ -1,5 +1,3 @@
-Welcome to the FI-ASockIOCore wiki!
-
 # FI-ASockIOCore
 FI Async Socket IO Core
 
