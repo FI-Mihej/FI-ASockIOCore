@@ -1,3 +1,5 @@
+Welcome to the FI-ASockIOCore wiki!
+
 # FI-ASockIOCore
 FI Async Socket IO Core
 
@@ -112,9 +114,9 @@ If FI-ASockIOCore with InlineProcessor == **1.0**, then:
 * TornadoWeb - didn't tested Tornado http server. But Tornado Simple Echo server is almost 2 times slower than Asyncio Simple Echo server.
 * GoLang simple http server from vmbench project == about **1.7** - **2.2**
     * **But**: 
-        * you **can't** restrict GoLang to really use only one CPU core (even with GOMAXPROCS=1); 
+        * you **can't** restrict GoLang to really use only one CPU core (even with GOMAXPROCS=1): on big strings (2+ MiB), GoLang really uses 2 - 2.7 CPU cores even with GOMAXPROCS=1; 
         * it (GoLang) **crashes** (especially when GOMAXPROCS > 1). Randomly and often. And as far as I know, it's a bug in a GoLang core (yet not fixed in the 1.6.2 release).
-* uvloop - comparable to GoLang (not as fast but close). Except of big strings (2+ MiB), when GoLang really uses 2 - 2.7 CPU cores even with GOMAXPROCS=1.
+* uvloop (https://github.com/MagicStack/uvloop) - comparable to GoLang (not as fast but close). But I didn't test it with lastest set of tests yet, so know nothing about it's robustness.
 
 ### Benchmark results in detail.
 
