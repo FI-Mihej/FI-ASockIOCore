@@ -94,6 +94,10 @@ Machine:
 OS:
 * Ubuntu 14.04.4 LTS x86_64
 
+Interpreter:
+* CPython 3.4.3 installed from OS repo. Was used for testing 'FI-ASockIOCore + httptools' and 'asyncio + httptools'
+* Anaconda 4.0.0 (Python 3.5.1) installed from site and CPython 3.5.1 installed from site. Both of them are 30% slower than system CPython interpreter. Didn't test CPython 3.4.3 from site yet, so. Was used for testing 'FI-ASockIOCore + httptools', 'asyncio + httptools' and 'uvloop + httptools'
+
 #### Concurency tests (relative performance per concurent connections from 1 and up to 1000):
 
 FI-ASockIOCore is an equivalent to asyncio, uvloop, golang, etc.
@@ -107,11 +111,12 @@ If FI-ASockIOCore with InlineProcessor == **1.0**, then:
     * **But**:
         * it **can't** pass test when string size == 8760000 bytes (and sometimes on other big string sizes): wrk always returns "0.0R/s; 2.41MiB/s"
 * FI-ASockIOCore with server methods API == **1.0** on up to few KiB; **0.64** on 1MiB; and **1.0** on 5+ MiB
-* TornadoWeb == about **0.5** (with small and midle string) - **0.75** (512+ KiB) (didn't test yet with the last set of benchmark tests so this is not precise)
+* TornadoWeb - didn't tested Tornado http server. But Tornado Simple Echo server is almost 2 times slower than Asyncio Simple Echo server.
 * GoLang simple http server from vmbench project == about **1.7** - **2.2**
     * **But**: 
         * you **can't** restrict GoLang to really use only one CPU core (even with GOMAXPROCS=1); 
         * it (GoLang) **crashes** (especially when GOMAXPROCS > 1). Randomly and often. And as far as I know, it's a bug in a GoLang core (yet not fixed in the 1.6.2 release).
+* uvloop - comparable to GoLang (not as fast but close). Except of big strings (2+ MiB), when GoLang really uses 2 - 2.7 CPU cores even with GOMAXPROCS=1.
 
 ### Benchmark results in detail.
 
