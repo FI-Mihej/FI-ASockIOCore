@@ -17,6 +17,8 @@ FI Async Socket IO Core
 * Works _with several passive sockets at the same time_. For example you can open few different TCP/UDP ports, few UNIX sockets and accept clients from all of them transparently.
 * It can act as _both a server and a client_.
 * Cross-platform
+* Supports Python 3.2+ (in a few cases it is 3.3+).
+    * Supports last PyPy Night Build (which implements Python 3.3)
 
 ## Short Examples
 
