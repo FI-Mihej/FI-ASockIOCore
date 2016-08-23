@@ -24,50 +24,62 @@ FI Async Socket IO Core
 
 Message creation using marshal (much faster than pickle):
 
-    data = ['some small or big string or other object', 1234, b'some bytes data', {1, 2, 3, 4}]
-    command = ('do some work', data)
-    compact_command = marshal.dumps(command)
+```python
+data = ['some small or big string or other object', 1234, b'some bytes data', {1, 2, 3, 4}]
+command = ('do some work', data)
+compact_command = marshal.dumps(command)
+```
 
 Send single message:
 
-    server.send_message_to_client(manager_client_id, compact_command)
+```python
+server.send_message_to_client(manager_client_id, compact_command)
+```
 
 Send list of 1000000 messages (you can use iterable for memory saving):
 
-    server.send_messages_to_client(manager_client_id, [b'some data' for index in range(10**6)])
+```python
+server.send_messages_to_client(manager_client_id, [b'some data' for index in range(10**6)])
+```
 
 Run another IO iteration:
 
-    io_iteration_result = server.io_iteration(io_iteration_timeout)
+```python
+io_iteration_result = server.io_iteration(io_iteration_timeout)
+```
 
 Where io io_iteration_result an object of class IoIterationResult:
 
-    class IoIterationResult:
-        def __init__(self):
-            self.newly_connected_expected_clients = set()
-            self.newly_connected_unknown_clients = set()
-            self.clients_with_disconnected_connection = set()
-            self.clients_have_data_to_read = set()
-            self.clients_with_empty_output_fifo = set()
+```python
+class IoIterationResult:
+    def __init__(self):
+        self.newly_connected_expected_clients = set()
+        self.newly_connected_unknown_clients = set()
+        self.clients_with_disconnected_connection = set()
+        self.clients_have_data_to_read = set()
+        self.clients_with_empty_output_fifo = set()
+```
 
 ### Sending messages using class inheritance:
 
-    class SimpleInlineProcessor(InlineProcessor):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-    
-        def on__data_received(self, data: bytes):
-            if b'close' == data:
-                self.mark__socket_as_ready_to_be_closed(True)
-            else:
-                data += b'1234'
-                self.output_messages.append(data)  # Send data back to client
-    
-        def on__output_buffers_are_empty(self):
-            self.output_messages.append('I don\'t here you!')  # Send some data to client
-    
-        def on__connection_lost(self):
-            print('Client with name "{}" is disconnected'.format(self.keyword))
+```python
+class SimpleInlineProcessor(InlineProcessor):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def on__data_received(self, data: bytes):
+        if b'close' == data:
+            self.mark__socket_as_ready_to_be_closed(True)
+        else:
+            data += b'1234'
+            self.output_messages.append(data)  # Send data back to client
+
+    def on__output_buffers_are_empty(self):
+        self.output_messages.append('I don\'t here you!')  # Send some data to client
+
+    def on__connection_lost(self):
+        print('Client with name "{}" is disconnected'.format(self.keyword))
+```
 
 ## Full Examples
 
